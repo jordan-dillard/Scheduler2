@@ -1,26 +1,7 @@
-import {getCourseTerm, terms} from '../utilities/time';
-import React, { useState} from 'react';
+import React, { useState } from 'react';
+import {terms, getCourseTerm} from '../utilities/time';
 import Course from './Course.js';
-
-const TermButton = ({term, setTerm, checked}) => (
-    <>
-      <input type="radio" id={term} className="btn-check" checked={checked} autoComplete="off"
-        onChange={() => setTerm(term)} />
-      <label class="btn btn-success m-1 p-2" htmlFor={term}>
-      { term }
-      </label>
-    </>
-  );
-
-const TermSelector = ({term, setTerm}) => (
-    <div className="btn-group">
-    { 
-      Object.values(terms).map(value => (
-        <TermButton key={value} term={value} setTerm={setTerm} checked={value === term} />
-      ))
-    }
-    </div>
-  );
+import { signInWithGoogle } from '../utilities/firebase.js';
 
 const CourseList = ({ courses }) => {
     const [term, setTerm] = useState('Fall');
@@ -42,5 +23,34 @@ const CourseList = ({ courses }) => {
     );
   };
 
+  const TermButton = ({term, setTerm, checked}) => (
+    <>
+      <input type="radio" id={term} className="btn-check" checked={checked} autoComplete="off"
+        onChange={() => setTerm(term)} />
+      <label class="btn btn-success m-1 p-2" htmlFor={term}>
+      { term }
+      </label>
+    </>
+  );
+
+  const SignInButton = () => (
+    <button className="btn btn-secondary btn-sm"
+        onClick={() => signInWithGoogle()}>
+      Sign In
+    </button>
+  );
+
+  const TermSelector = ({term, setTerm}) => (
+    <div className="btn-toolbar justify-content-between">
+      <div className="btn-group">
+      { 
+        Object.values(terms).map(
+          value => <TermButton key={value} term={value} setTerm={setTerm} checked={value === term} />
+        )
+      }
+      </div>
+      <SignInButton />
+    </div>
+  );
+
   export default CourseList;
-  
